@@ -4,7 +4,6 @@ var cabecera
             <th>Codigo</th>
             <th>Nombre</th>
             <th>Descripcion</th>
-            <th>Precio unitario</th>
             <th>Existencia</th>
         </tr>
     </thead>`;
@@ -20,7 +19,6 @@ var llenarTablaProductos = () => {
                         <td>${array[i].codigo}</td>
                         <td>${array[i].nombre}</td>
                         <td>${array[i].descripcion}</td>
-                        <td>${array[i].precio_unitario}</td>
                         <td>${array[i].existencia}</td>
                     </tr>
             `;
@@ -35,14 +33,12 @@ var guardarProducto = () => {
     let codigo = document.getElementById('codigo').value;
     let nombre = document.getElementById('nombre').value;
     let descripcion = document.getElementById('descripcion').value;
-    let precio_unitario = document.getElementById('precio_unitario').value;
     let existencia = document.getElementById('existencia').value;
 
     axios.post('/api/v1/agregar-producto', {
         codigo,
         nombre,
         descripcion,
-        precio_unitario,
         existencia
     }).then((response) => {
         if(response.data.errorMessage){
@@ -58,6 +54,5 @@ var vaciarFormulario = () =>{
     document.getElementById('codigo').value = '';
     document.getElementById('nombre').value = '';
     document.getElementById('descripcion').value = '';
-    document.getElementById('precio_unitario').value = '';
     document.getElementById('existencia').value = '';
 };

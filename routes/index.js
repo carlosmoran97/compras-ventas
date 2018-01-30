@@ -44,7 +44,7 @@ router.get('/api/v1/obtener-productos', (req, res, next) => {
         errorMessage: err.stack
       });
     }
-    var sql = 'SELECT * FROM producto';
+    let sql = 'SELECT * FROM producto';
     client.query(sql,(err, result) => {
       release();
       if(err){
@@ -57,6 +57,46 @@ router.get('/api/v1/obtener-productos', (req, res, next) => {
   });
 });
 
+router.get('/api/v1/obtener-productos/:id', (req, res, next) => {
+  let id = req.params.id;
+  pool.connect((err, client, release) => {
+    if(err){
+      return res.json({
+        errorMessage: err.stack
+      });
+    }
+    let sql = `SELECT * FROM producto WHERE id_producto = $1`;
+    pool.query(sql,[id],(err,result) => {
+      if(err){
+        res.json({
+          errorMessage: err.stack
+        });
+      }
+      res.status(200).send(result.rows[0]);
+    });
+  });
+});
+
+router.get('/api/v1/obtener-productos-bycode/:codigo', (req, res, next) => {
+  let codigo = req.params.codigo;
+  pool.connect((err, client, release) => {
+    if(err){
+      return res.json({
+        errorMessage: err.stack
+      });
+    }
+    let sql = `SELECT * FROM producto WHERE codigo = $1`;
+    pool.query(sql,[codigo],(err,result) => {
+      if(err){
+        res.json({
+          errorMessage: err.stack
+        });
+      }
+      res.status(200).send(result.rows[0]);
+    });
+  });
+});
+
 router.post('/api/v1/agregar-producto', (req, res, next) => {
   pool.connect((err, client, release) => {
     if(err){
@@ -64,14 +104,13 @@ router.post('/api/v1/agregar-producto', (req, res, next) => {
         errorMessage: err.stack
       });
     }
-    var sql = `INSERT INTO producto (codigo,nombre, descripcion, precio_unitario, existencia) VALUES ($1, $2, $3, $4, $5)`;
+    var sql = `INSERT INTO producto (codigo,nombre, descripcion, existencia) VALUES ($1, $2, $3, $4)`;
     var codigo = req.body.codigo;
     var nombre = req.body.nombre;
     var descipcion = req.body.descripcion;
-    var precio_unitario = req.body.precio_unitario;
     var existencia = req.body.existencia;
 
-    client.query(sql,[codigo, nombre, descipcion, precio_unitario, existencia],(err, result) => {
+    client.query(sql,[codigo, nombre, descipcion, existencia],(err, result) => {
       release();
       if(err){
         return res.json({
