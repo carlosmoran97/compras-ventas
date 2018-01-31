@@ -65,6 +65,9 @@ var agregarLineaDeCompra = () => {
                      </tr>`;
         }
         tabla.innerHTML = html;
+        document.getElementById('cantidad').value = 1;
+        document.getElementById('precio_unitario').value = '';
+        document.getElementById('codigo').value = '';
     }).catch((err) => {
         alert(err);
     });
@@ -93,8 +96,8 @@ var guardarCompra = () => {
             proveedor: proveedor.value,
             lineasDeCompraStr
         }).then((response) => {
-            alert(response.data.message);
             limpiarFormulario();
+            alert(response.data.message);
         }).catch((err) => {
             alert(err);
         });
@@ -119,6 +122,6 @@ var limpiarFormulario = () => {
     precio_unitario.value = '';
     tabla.innerHTML = cabecera;
 
-    let lineasDeCompra = [];
+    lineasDeCompra = [];
     lineasDeCompra.length = 0;
 };

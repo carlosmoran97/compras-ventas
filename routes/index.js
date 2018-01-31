@@ -151,9 +151,43 @@ router.post('/api/v1/agregar-compra', (req, res, next) => {
       console.log('lenght: ',lineasDeCompra.length);
       return client.query(sql,values);
     }).then((result) => {
+      return client.query('SELECT id_compra FROM compra ORDER BY id_compra DESC LIMIT 1;');
+    }).then((result) => {
+      let sql = 'SELECT p.id_producto,p.nombre,p.descripcion,p.existencia,p.codigo,c.cantidad FROM producto p JOIN linea_de_compra c ON p.id_producto = c.id_producto WHERE c.id_compra = $1';
+      let id_compra = result.rows[0].id_compra;
+      return client.query(sql,[id_compra]);
+    }).then((result) => {
+      let valuesArray = [];
+      let valuesStr = '';
+      let sql = ``;
+      // llenando el arreglo de los valores
+      for(let i = 0; i <result.rows.length; i++){
+        let row = {
+          id_producto: result.rows[i].id_producto,
+          nombre: result.rows[i].nombre,
+          descripcion: result.rows[i].descripcion,
+          existencia: result.rows[i].existencia + result.rows[i].cantidad,
+          codigo: result.rows[i].codigo
+        };
+        valuesArray.push(row.id_producto);
+        valuesArray.push(row.nombre);
+        valuesArray.push(row.descripcion);
+        valuesArray.push(row.existencia);
+        valuesArray.push(row.codigo);
+        valuesStr += `($${(i+1)*5-4},$${(i+1)*5-3},$${(i+1)*5-2},$${(i+1)*5-1},$${(i+1)*5}),`;
+      }
+      valuesStr = valuesStr.substring(0,valuesStr.length-1);
+      sql += `INSERT INTO producto (id_producto,nombre,descripcion,existencia,codigo) `;
+      sql += `VALUES ${valuesStr} `;
+      sql += `ON CONFLICT (id_producto) DO UPDATE SET `;
+      sql += `nombre=excluded.nombre, descripcion=excluded.descripcion,existencia=excluded.existencia,codigo=excluded.codigo;`;
+      console.log(sql);
+      return client.query(sql,valuesArray);
+    })
+    .then((result) => {
       client.release();
       res.json({
-        message: 'Compra guardada correctamente'
+        message: 'Compra guardada exitosamente. Catálogo de productos actualizado'
       });
     })
     .catch((err) => {
