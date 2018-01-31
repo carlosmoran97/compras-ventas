@@ -122,4 +122,48 @@ router.post('/api/v1/agregar-producto', (req, res, next) => {
   });
 });
 
+router.post('/api/v1/agregar-compra', (req, res, next) => {
+  pool.connect().then((client) => {
+    let fecha = req.body.fecha;
+    let num_compra = req.body.num_compra;
+    let proveedor = req.body.proveedor;
+    console.log(fecha,num_compra,proveedor);
+    let sql = 'INSERT INTO compra(num_compra,fecha,proveedor) VALUES($1, $2, $3);'; 
+    client.query(sql,[num_compra,fecha,proveedor]).then((result) => {
+      return client.query('SELECT id_compra FROM compra ORDER BY id_compra DESC LIMIT 1;');
+    }).then((result) => {
+      let id_compra = result.rows[0].id_compra;
+      let lineasDeCompra = JSON.parse(req.body.lineasDeCompraStr);
+      let sql = 'INSERT INTO linea_de_compra (id_compra, id_producto, cantidad, precio_unitario) VALUES ';
+      let values = [];
+      for(let i = 1; i <= lineasDeCompra.length; i++){
+        sql += `($${4*i-3},$${4*i -2},$${4*i-1},$${4*i}),`;
+        values.push(id_compra);
+        values.push(lineasDeCompra[i-1].id_producto);
+        values.push(lineasDeCompra[i-1].cantidad);
+        values.push(lineasDeCompra[i-1].precio_unitario);
+      }
+      sql = sql.substring(0, sql.length-1);
+      sql += ';'
+      console.log(lineasDeCompra);
+      console.log('sql: ',sql);
+      console.log('values: ',values);
+      console.log('lenght: ',lineasDeCompra.length);
+      return client.query(sql,values);
+    }).then((result) => {
+      client.release();
+      res.json({
+        message: 'Compra guardada correctamente'
+      });
+    })
+    .catch((err) => {
+      client.release();
+      console.error('query error', err.message, err.stack);
+      res.json({
+        message: 'query error' +'\n'+ err.message + '\n' +  err.stack
+      });
+    });
+  });
+});
+
 module.exports = router;

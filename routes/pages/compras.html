@@ -4,15 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Compras</title>
+    <script src="/axios/dist/axios.min.js"></script>
+    <script src="javascripts/compras.js"></script>
 </head>
-<body>
+<body onload="limpiarFormulario();">
     <nav>
         <a href="/">Inicio</a><br>
         <a href="/productos">Productos</a><br>
         <a href="/compras">Compras</a><br>
         <a href="/ventas">Ventas</a><br>
     </nav>
-       
+    <form>
+        <p>
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha">
+            <br>
+        </p>
+        <p>
+            <label for="num_compra">No. de documento</label>
+            <input type="text" id="num_compra" name="num_compra">
+            <br>
+        </p>
+        <p>
+            <label for="proveedor">Proveedor</label>
+            <input type="text" id="proveedor" name="proveedor">
+            <br>
+        </p>
+        <p>
+            Lineas de compra 
+            <input type="button" id="catalogo" name="catalogo" onclick="abrirEnPestana('/productos');" value="Ver catalogo">
+        </p>
+        <p>
+            <label for="cantidad">Cantidad: </label>
+            <input type="number" id="cantidad" name="cantidad" value="1">
+            <label for="codigo">Código: </label>
+            <input type="text" id="codigo" name="codigo" placeholder="Código">
+            <label for="precio_unitario">Precio unitario: </label>
+            <input type="text" id="precio_unitario" name="precio_unitario" placeholder="Precio unitario">
+        </p>
+        <p>
+            <input type="button" value="Agregar" onclick="agregarLineaDeCompra();">
+        </p>
+        <table id="tabla-lineas-de-compras" border="1">
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Concepto</th>
+                    <th>Precio unitario</th>
+                    <th>Total de linea</th>
+                </tr>
+            </thead>
+        </table>
+        <p>
+            <input type="button" value="Guardar" onclick="guardarCompra();">
+        </p>
+    </form>
 </body>
 </html>
