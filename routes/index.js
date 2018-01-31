@@ -200,4 +200,83 @@ router.post('/api/v1/agregar-compra', (req, res, next) => {
   });
 });
 
+router.post('/api/v1/agregar-venta', (req, res, next) => {
+  pool.connect().then((client) => {
+    let fecha = req.body.fecha;
+    let num_venta = req.body.num_venta;
+    let cliente = req.body.cliente;
+    console.log(fecha,num_venta,cliente);
+    let sql = 'INSERT INTO venta(num_venta,fecha,cliente) VALUES($1, $2, $3);'; 
+    client.query(sql,[num_venta,fecha,cliente]).then((result) => {
+      return client.query('SELECT id_venta FROM venta ORDER BY id_venta DESC LIMIT 1;');
+    }).then((result) => {
+      let id_venta = result.rows[0].id_venta;
+      console.log('Lineas de venta\n',req.body.lineasDeVentaStr);
+      let lineasDeVenta = JSON.parse(req.body.lineasDeVentaStr);
+      let sql = 'INSERT INTO linea_de_venta (id_venta, id_producto, cantidad, precio_unitario) VALUES ';
+      let values = [];
+      for(let i = 1; i <= lineasDeVenta.length; i++){
+        sql += `($${4*i-3},$${4*i -2},$${4*i-1},$${4*i}),`;
+        values.push(id_venta);
+        values.push(lineasDeVenta[i-1].id_producto);
+        values.push(lineasDeVenta[i-1].cantidad);
+        values.push(lineasDeVenta[i-1].precio_unitario);
+      }
+      sql = sql.substring(0, sql.length-1);
+      sql += ';'
+      console.log(lineasDeVenta);
+      console.log('sql: ',sql);
+      console.log('values: ',values);
+      console.log('lenght: ',lineasDeVenta.length);
+      return client.query(sql,values);
+    }).then((result) => {
+      return client.query('SELECT id_venta FROM venta ORDER BY id_venta DESC LIMIT 1;');
+    }).then((result) => {
+      let sql = 'SELECT p.id_producto,p.nombre,p.descripcion,p.existencia,p.codigo,c.cantidad FROM producto p JOIN linea_de_venta c ON p.id_producto = c.id_producto WHERE c.id_venta = $1';
+      let id_venta = result.rows[0].id_venta;
+      return client.query(sql,[id_venta]);
+    }).then((result) => {
+      let valuesArray = [];
+      let valuesStr = '';
+      let sql = ``;
+      // llenando el arreglo de los valores
+      for(let i = 0; i <result.rows.length; i++){
+        let row = {
+          id_producto: result.rows[i].id_producto,
+          nombre: result.rows[i].nombre,
+          descripcion: result.rows[i].descripcion,
+          existencia: result.rows[i].existencia - result.rows[i].cantidad,
+          codigo: result.rows[i].codigo
+        };
+        valuesArray.push(row.id_producto);
+        valuesArray.push(row.nombre);
+        valuesArray.push(row.descripcion);
+        valuesArray.push(row.existencia);
+        valuesArray.push(row.codigo);
+        valuesStr += `($${(i+1)*5-4},$${(i+1)*5-3},$${(i+1)*5-2},$${(i+1)*5-1},$${(i+1)*5}),`;
+      }
+      valuesStr = valuesStr.substring(0,valuesStr.length-1);
+      sql += `INSERT INTO producto (id_producto,nombre,descripcion,existencia,codigo) `;
+      sql += `VALUES ${valuesStr} `;
+      sql += `ON CONFLICT (id_producto) DO UPDATE SET `;
+      sql += `nombre=excluded.nombre, descripcion=excluded.descripcion,existencia=excluded.existencia,codigo=excluded.codigo;`;
+      console.log(sql);
+      return client.query(sql,valuesArray);
+    })
+    .then((result) => {
+      client.release();
+      res.json({
+        message: 'Venta guardada exitosamente. Catálogo de productos actualizado'
+      });
+    })
+    .catch((err) => {
+      client.release();
+      console.error('query error', err.message, err.stack);
+      res.json({
+        message: 'query error' +'\n'+ err.message + '\n' +  err.stack
+      });
+    });
+  });
+});
+
 module.exports = router;

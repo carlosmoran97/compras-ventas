@@ -4,14 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Ventas</title>
+    <script src="/axios/dist/axios.min.js"></script>
+    <script src="javascripts/ventas.js"></script>
 </head>
-<body>
+<body onload="limpiarFormulario();">
     <nav>
         <a href="/">Inicio</a><br>
         <a href="/productos">Productos</a><br>
         <a href="/compras">Compras</a><br>
         <a href="/ventas">Ventas</a><br>
     </nav>
+    <form>
+        <p>
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha">
+            <br>
+        </p>
+        <p>
+            <label for="num_venta">No. de documento</label>
+            <input type="text" id="num_venta" name="num_venta">
+            <br>
+        </p>
+        <p>
+            <label for="cliente">Cliente</label>
+            <input type="text" id="cliente" name="cliente">
+            <br>
+        </p>
+        <p>
+            Lineas de venta 
+            <input type="button" id="catalogo" name="catalogo" onclick="abrirEnPestana('/productos');" value="Ver catalogo">
+        </p>
+        <p>
+            <label for="cantidad">Cantidad: </label>
+            <input type="number" id="cantidad" name="cantidad" value="1">
+            <label for="codigo">Código: </label>
+            <input type="text" id="codigo" name="codigo" placeholder="Código">
+            <label for="precio_unitario">Precio unitario: </label>
+            <input type="text" id="precio_unitario" name="precio_unitario" placeholder="Precio unitario">
+        </p>
+        <p>
+            <input type="button" value="Agregar" onclick="agregarLineaDeVenta();">
+        </p>
+        <table id="tabla-lineas-de-venta" border="1">
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Concepto</th>
+                    <th>Precio unitario</th>
+                    <th>Total de linea</th>
+                </tr>
+            </thead>
+        </table>
+        <p>
+            <input type="button" value="Guardar" onclick="guardarVenta();">
+        </p>
+    </form>
 </body>
 </html>
