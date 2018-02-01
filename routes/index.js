@@ -5,7 +5,7 @@ const path = require('path');
 
 //configurando la conexion a la base de datoe
 const pool = new Pool({
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'postgres',
   password: 'admin',
   database: 'postgres',
