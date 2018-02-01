@@ -36,6 +36,11 @@ router.get('/ventas', (req, res, next) => {
   res.sendFile(__dirname + '/pages/ventas.html');
 });
 
+/* GET registro */
+router.get('/registro', (req, res, next) => {
+  res.sendFile(__dirname+'/pages/registro.html');
+});
+
 // api
 router.get('/api/v1/obtener-productos', (req, res, next) => {
   pool.connect((err, client, release) => {
@@ -275,6 +280,68 @@ router.post('/api/v1/agregar-venta', (req, res, next) => {
       res.json({
         message: 'query error' +'\n'+ err.message + '\n' +  err.stack
       });
+    });
+  });
+});
+
+router.get('/api/v1/obtener-compras',(req, res, next) => {
+  pool.connect().then((client)=>{
+    let sql = 'SELECT * FROM compra';
+    client.query(sql).then((result) => {
+      client.release();
+      res.json(result.rows);
+    });
+  }).catch((e)=>{
+    client.release();
+    res.json({
+      message: e.stack()
+    });
+  });
+});
+
+router.get('/api/v1/obtener-lineas-de-compra',(req, res, next) => {
+  pool.connect().then((client)=>{
+    let sql = 'SELECT * FROM linea_de_compra l JOIN producto p ON ';
+    sql += 'l.id_producto = p.id_producto;';
+    client.query(sql).then((result) => {
+      client.release();
+      res.json(result.rows);
+    });
+  }).catch((e)=>{
+    client.release();
+    res.json({
+      message: e.stack()
+    });
+  });
+});
+
+router.get('/api/v1/obtener-ventas',(req, res, next) => {
+  pool.connect().then((client)=>{
+    let sql = 'SELECT * FROM venta';
+    client.query(sql).then((result) => {
+      client.release();
+      res.json(result.rows);
+    });
+  }).catch((e)=>{
+    client.release();
+    res.json({
+      message: e.stack()
+    });
+  });
+});
+
+router.get('/api/v1/obtener-lineas-de-venta',(req, res, next) => {
+  pool.connect().then((client)=>{
+    let sql = 'SELECT * FROM linea_de_venta l JOIN producto p ON ';
+    sql += 'l.id_producto = p.id_producto;';
+    client.query(sql).then((result) => {
+      client.release();
+      res.json(result.rows);
+    });
+  }).catch((e)=>{
+    client.release();
+    res.json({
+      message: e.stack()
     });
   });
 });

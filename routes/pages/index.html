@@ -1,18 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Inicio</title>
+    <!-- bootstrap -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximun-scale=1.0, minimun-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
 </head>
+
 <body>
-        <nav>
-            <a href="/">Inicio</a><br>
-            <a href="/productos">Productos</a><br>
-            <a href="/compras">Compras</a><br>
-            <a href="/ventas">Ventas</a><br>
-        </nav>
-    Bienvenido
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Sistema de registro</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/productos">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/compras">Compras</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ventas">Ventas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registro">Registro</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>Inicio</h1>
+        </header>
+        <!-- bootstrap -->
+        <script src="javascripts/jquery-3.2.1.min.js"></script>
+        <script src="javascripts/bootstrap.min.js"></script>
+    </div>
 </body>
+
 </html>

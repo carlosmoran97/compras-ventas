@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registro</title>
+    <script src="/axios/dist/axios.min.js"></script>
+    <script src="javascripts/registro.js"></script>
+    <!-- bootstrap -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximun-scale=1.0, minimun-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+</head>
+
+<body onload="obtenerDatos();">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">Sistema de registro</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/productos">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/compras">Compras</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ventas">Ventas</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/registro">Registro</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+    <div class="container">
+        <header>
+            <h1>Registro de movimientos</h1>
+        </header>
+        <article>
+            <p>
+            <form class="form-inline">
+                <div class="form-group">
+            <label for="movimiento">Movimiento:</label>
+            <select class="form-control" id="movimiento">
+                <option value="ventas">Ventas</option>
+                <option value="compras">Compras</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="mes">Mes: </label>
+            <select class="form-control" id="mes">
+                <option value="0">Enero</option>
+                <option value="1">Febrero</option>
+                <option value="2">Marzo</option>
+                <option value="3">Abril</option>
+                <option value="4">Mayo</option>
+                <option value="5">Junio</option>
+                <option value="6">Julio</option>
+                <option value="7">Agosto</option>
+                <option value="8">Septiembre</option>
+                <option value="9">Octubre</option>
+                <option value="10">Noviembre</option>
+                <option value="11">Diciembre</option>
+            </select>
+        </div> 
+        <div class="form-group">
+            <label for="año">Año: </label>
+            <input class="form-control" min="1900" type="number" id="año" value="">
+        </div>
+            <input type="button" value="Filtrar" class="btn btn-primary" onclick="filtrar()">
+        </form>
+    </p>
+            <table id="tabla-registro" class="table table-hover">
+
+            </table>
+            <strong>Total del mes: </strong>
+            <label id="total-mes"></label>
+        </article>
+    </div>
+    <!-- bootstrap -->
+    <script src="javascripts/jquery-3.2.1.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+
+</body>
+
+</html>

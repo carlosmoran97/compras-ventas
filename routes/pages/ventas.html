@@ -1,52 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ventas</title>
     <script src="/axios/dist/axios.min.js"></script>
     <script src="javascripts/ventas.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximun-scale=1.0, minimun-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
 </head>
+
 <body onload="limpiarFormulario();">
-    <nav>
-        <a href="/">Inicio</a><br>
-        <a href="/productos">Productos</a><br>
-        <a href="/compras">Compras</a><br>
-        <a href="/ventas">Ventas</a><br>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Sistema de registro</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/productos">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/compras">Compras</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ventas">Ventas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registro">Registro</a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <form>
+    <div class="container">
+        <header>
+            <h1>Gestionar ventas</h1>
+        </header>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="fecha">Fecha</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="date" id="fecha" name="fecha">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="num_venta">No. de documento</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" id="num_venta" name="num_venta" placeholder="No. de documento">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="cliente">Cliente</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" id="cliente" name="cliente" placeholder="Cliente">
+                </div>
+            </div>
+        </form>
         <p>
-            <label for="fecha">Fecha</label>
-            <input type="date" id="fecha" name="fecha">
-            <br>
+            Lineas de venta
+            <input type="button" class="btn btn-primary" id="catalogo" name="catalogo" onclick="abrirEnPestana('/productos');" value="Ver catalogo">
         </p>
+
         <p>
-            <label for="num_venta">No. de documento</label>
-            <input type="text" id="num_venta" name="num_venta">
-            <br>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" min="1" id="cantidad" class="form-control" name="cantidad" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="codigo">Código:</label>
+                    <input class="form-control" type="text" id="codigo" name="codigo" placeholder="Código">
+                </div>
+                <div class="form-group">
+                    <label for="precio_unitario">Precio unitario: </label>
+                    <input class="form-control" type="text" id="precio_unitario" name="precio_unitario" placeholder="Precio unitario">
+                </div>
+            </form>
         </p>
+
         <p>
-            <label for="cliente">Cliente</label>
-            <input type="text" id="cliente" name="cliente">
-            <br>
+            <input type="button" class="btn btn-primary" value="Agregar" onclick="agregarLineaDeVenta();">
         </p>
-        <p>
-            Lineas de venta 
-            <input type="button" id="catalogo" name="catalogo" onclick="abrirEnPestana('/productos');" value="Ver catalogo">
-        </p>
-        <p>
-            <label for="cantidad">Cantidad: </label>
-            <input type="number" id="cantidad" name="cantidad" value="1">
-            <label for="codigo">Código: </label>
-            <input type="text" id="codigo" name="codigo" placeholder="Código">
-            <label for="precio_unitario">Precio unitario: </label>
-            <input type="text" id="precio_unitario" name="precio_unitario" placeholder="Precio unitario">
-        </p>
-        <p>
-            <input type="button" value="Agregar" onclick="agregarLineaDeVenta();">
-        </p>
-        <table id="tabla-lineas-de-venta" border="1">
+        <table id="tabla-lineas-de-venta" class="table table-hover">
             <thead>
                 <tr>
                     <th>Cantidad</th>
@@ -57,8 +101,13 @@
             </thead>
         </table>
         <p>
-            <input type="button" value="Guardar" onclick="guardarVenta();">
+            <input class="btn btn-primary" type="button" value="Guardar" onclick="guardarVenta();">
         </p>
-    </form>
+        </form>
+    </div>
+    <!-- bootstrap -->
+    <script src="javascripts/jquery-3.2.1.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
 </body>
+
 </html>
